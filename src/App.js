@@ -1,21 +1,34 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Button, Text, StyleSheet} from 'react-native';
-import SearchBarMolecule from './Components/Molecule/SearchBarMolecule';
-import ButtonAtom from './Components/Atoms/ButtonAtom';
-import UserProfileOrganism from './Components/Organism/UserProfileOrganism';
-import {globalStyles} from './Components/Style/GlobalStyles';
+import SignInScreen from './Screens/SignInScreen';
+// import SearchBarMolecule from './Components/Molecule/SearchBarMolecule';
+// import ButtonAtom from './Components/Atoms/ButtonAtom';
+// import UserProfileOrganism from './Components/Organism/UserProfileOrganism';
+// import {globalStyles} from './Components/Style/GlobalStyles';
+// import {NavigationContainer} from '@react-navigation/native';
+// import AppNavigator from './Screens/Navigator/AppNavigator';
+// import {
+//   navigationRef,
+//   isReadyRef,
+// } from '../src/Screens/Navigator/RootNavigation';
 
 const App = () => {
-  const showMessage = () => {
-    alert('Hello, CookIt! Your React Native app is working!');
-  };
+  // useEffect(() => {
+  //   return () => {
+  //     isReadyRef.current = false;
+  //   };
+  // }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>CookIt App</Text>
-      <ButtonAtom label="Check It" onPress={showMessage} />
-
-      <UserProfileOrganism />
+      <SignInScreen />
+      {/* <NavigationContainer
+        ref={navigationRef}
+        onReady={() => {
+          isReadyRef.current = true;
+        }}>
+        <AppNavigator />
+      </NavigationContainer> */}
     </View>
   );
 };
@@ -26,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'Futura',
+    maxWidth: '100%',
   },
   title: {
     fontSize: 24,
