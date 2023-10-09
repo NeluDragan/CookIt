@@ -1,26 +1,17 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  useWindowDimensions,
-  TouchableOpacity,
-} from 'react-native';
-// import {useNavigation} from '@react-navigation/native';
-import Logo from '../../../assets/images/logo.png';
-import InputAtom from '../../Components/Atoms/InputAtom';
-import ButtonAtom from '../../Components/Atoms/ButtonAtom';
+import React, {useState, useContext} from 'react';
+import {View, Text, Image, StyleSheet, useWindowDimensions} from 'react-native';
 
-const SignInScreen = () => {
+import Logo from '../../assets/images/logo.png';
+import InputAtom from '../Components/Atoms/InputAtom';
+import ButtonAtom from '../Components/Atoms/ButtonAtom';
+import {AuthContext} from '../context/AuthContext';
+
+const SignInScreen = ({navigation}) => {
+  const {login} = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {height} = useWindowDimensions();
-  // const navigation = useNavigation();
 
-  // const navigateToSignUp = () => {
-  //   navigation.navigate('SignUp'); // Navigate to the SignUpScreen
-  // };
   return (
     <View style={styles.root}>
       <Image
@@ -28,6 +19,7 @@ const SignInScreen = () => {
         style={[styles.logo, {height: height * 0.15}]}
         resizeMode="contain"
       />
+
       <View style={styles.loginContainer}>
         <InputAtom
           placeholder="Username"
@@ -40,14 +32,17 @@ const SignInScreen = () => {
           setValue={setPassword}
         />
         <View style={styles.button}>
-          <ButtonAtom label="Log In" onPress={() => console.log('Sign In')} />
+          <ButtonAtom
+            label="Log In"
+            onPress={() => {
+              login();
+            }}
+          />
         </View>
       </View>
       <View style={styles.signupText}>
         <Text>Don't have an account? </Text>
-        {/* <TouchableOpacity onPress={navigateToSignUp}> */}
         <Text style={{color: 'blue'}}>Sign Up</Text>
-        {/* </TouchableOpacity> */}
       </View>
     </View>
   );

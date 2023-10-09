@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text} from 'react-native';
-import ButtonAtom from '../Atoms/ButtonAtom.js'; // Reuse the Atom
-import SearchBarMolecule from '../Molecule/SearchBarMolecule.js'; // Reuse the Molecule
+import ButtonAtom from '../Atoms/ButtonAtom.js';
+import SearchBarMolecule from '../Molecule/SearchBarMolecule.js';
 
 const UserProfileOrganism = () => {
   const [user, setUser] = useState({
@@ -10,7 +10,6 @@ const UserProfileOrganism = () => {
   });
 
   const handleLogout = () => {
-    // Handle logout logic here
     console.log('Logging out...');
   };
 

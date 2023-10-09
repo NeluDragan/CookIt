@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {PRIMARY_COLOR, SECONDARY_COLOR_2} from '../Style/Colors.js';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
-import ButtonAtom from '../Atoms/ButtonAtom.js'; // Reuse the Atom
+import ButtonAtom from '../Atoms/ButtonAtom.js';
 
 const SearchBarMolecule = () => {
   const [searchText, setSearchText] = useState('');
 
   const handleSearch = () => {
-    // Handle search logic here
     console.log('Searching for:', searchText);
   };
 
