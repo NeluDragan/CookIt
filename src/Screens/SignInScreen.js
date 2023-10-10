@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Image, StyleSheet, useWindowDimensions} from 'react-native';
 
-import Logo from '../../assets/images/logo.png';
+import Logo from '../images/logo.png';
 import InputAtom from '../Components/Atoms/InputAtom';
 import ButtonAtom from '../Components/Atoms/ButtonAtom';
 import {AuthContext} from '../context/AuthContext';
