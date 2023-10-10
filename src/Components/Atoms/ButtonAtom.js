@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_COLOR,
     padding: 10,
     borderRadius: 50,
-    width: 500,
+    width: 300,
     maxWidth: '95%',
   },
   label: {

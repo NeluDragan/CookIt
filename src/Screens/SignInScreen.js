@@ -1,10 +1,20 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, Image, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 
 import Logo from '../images/logo.png';
 import InputAtom from '../Components/Atoms/InputAtom';
 import ButtonAtom from '../Components/Atoms/ButtonAtom';
 import {AuthContext} from '../context/AuthContext';
+
+import BackgroundImage from '../images/bg1.jpg';
 
 const SignInScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);
@@ -12,39 +22,47 @@ const SignInScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const {height} = useWindowDimensions();
 
-  return (
-    <View style={styles.root}>
-      <Image
-        source={Logo}
-        style={[styles.logo, {height: height * 0.15}]}
-        resizeMode="contain"
-      />
+  const handleSignUpPress = () => {
+    navigation.navigate('Register');
+  };
 
-      <View style={styles.loginContainer}>
-        <InputAtom
-          placeholder="Username"
-          value={username}
-          setValue={setUsername}
+  return (
+    <ImageBackground source={BackgroundImage} style={styles.root}>
+      <View style={styles.root}>
+        <Image
+          source={Logo}
+          style={[styles.logo, {height: height * 0.15}]}
+          resizeMode="contain"
         />
-        <InputAtom
-          placeholder="Password"
-          value={password}
-          setValue={setPassword}
-        />
-        <View style={styles.button}>
-          <ButtonAtom
-            label="Log In"
-            onPress={() => {
-              login();
-            }}
+
+        <View style={styles.loginContainer}>
+          <InputAtom
+            placeholder="Username"
+            value={username}
+            setValue={setUsername}
           />
+          <InputAtom
+            placeholder="Password"
+            value={password}
+            setValue={setPassword}
+          />
+          <View style={styles.button}>
+            <ButtonAtom
+              label="Log In"
+              onPress={() => {
+                login();
+              }}
+            />
+          </View>
+        </View>
+        <View style={styles.signupText}>
+          <Text>Don't have an account? </Text>
+          <TouchableOpacity onPress={handleSignUpPress}>
+            <Text style={{color: 'blue'}}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.signupText}>
-        <Text>Don't have an account? </Text>
-        <Text style={{color: 'blue'}}>Sign Up</Text>
-      </View>
-    </View>
+    </ImageBackground>
   );
 };
 
