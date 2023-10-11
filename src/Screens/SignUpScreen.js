@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import ButtonAtom from '../Components/Atoms/ButtonAtom';
 import InputAtom from '../Components/Atoms/InputAtom';
@@ -17,9 +18,14 @@ const SignUpScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const handleSignUp = () => {
     // Implement your sign-up logic here
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
   };
 
   return (
@@ -27,22 +33,35 @@ const SignUpScreen = ({navigation}) => {
       <View style={styles.container}>
         <Text style={styles.title}>Sign Up</Text>
         <InputAtom
-          style={styles.input}
           placeholder="Username"
           value={username}
+          setValue={setUsername}
           onChangeText={text => setUsername(text)}
         />
         <InputAtom
-          style={styles.input}
           placeholder="Password"
-          secureTextEntry
           value={password}
+          setValue={setPassword}
           onChangeText={text => setPassword(text)}
+          secureTextEntry={!passwordVisibility}
         />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.visibilityBtn}
+          onPress={togglePasswordVisibility}>
+          <Image
+            source={
+              passwordVisibility
+                ? require('../images/hide.png')
+                : require('../images/view.png')
+            }
+            style={styles.visibilityIcon}
+          />
+        </TouchableOpacity>
         <InputAtom
-          style={styles.input}
           placeholder="Email"
           value={email}
+          setValue={setEmail}
           onChangeText={text => setEmail(text)}
         />
         <View style={styles.button}>
@@ -83,6 +102,16 @@ const styles = StyleSheet.create({
   signupText: {
     marginTop: 20,
     flexDirection: 'row',
+  },
+  visibilityBtn: {
+    position: 'absolute',
+    right: 7,
+    height: 65,
+    width: 30,
+  },
+  visibilityIcon: {
+    width: 22,
+    height: 22,
   },
 });
 

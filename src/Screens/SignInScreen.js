@@ -7,7 +7,9 @@ import {
   useWindowDimensions,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Logo from '../images/logo.png';
 import InputAtom from '../Components/Atoms/InputAtom';
@@ -21,9 +23,16 @@ const SignInScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {height} = useWindowDimensions();
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [rightIcon, setRightIcon] = useState('eye');
 
   const handleSignUpPress = () => {
     navigation.navigate('Register');
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
+    setRightIcon(passwordVisibility ? 'eye-off' : 'eye');
   };
 
   return (
@@ -45,15 +54,33 @@ const SignInScreen = ({navigation}) => {
             placeholder="Password"
             value={password}
             setValue={setPassword}
+            onChangeText={UserPassword => setPassword(UserPassword)}
+            secureTextEntry={passwordVisibility}
           />
-          <View style={styles.button}>
-            <ButtonAtom
-              label="Log In"
-              onPress={() => {
-                login();
-              }}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.visibilityBtn}
+            onPress={togglePasswordVisibility}>
+            <Image
+              source={
+                rightIcon === 'eye'
+                  ? require('../images/view.png')
+                  : require('../images/hide.png')
+              }
+              style={styles.visibilityBtn}
             />
-          </View>
+          </TouchableOpacity>
+
+          <SafeAreaView style={styles.mainContainer}>
+            <View style={styles.button}>
+              <ButtonAtom
+                label="Log In"
+                onPress={() => {
+                  login();
+                }}
+              />
+            </View>
+          </SafeAreaView>
         </View>
         <View style={styles.signupText}>
           <Text>Don't have an account? </Text>
@@ -87,6 +114,26 @@ const styles = StyleSheet.create({
   signupText: {
     marginTop: 20,
     flexDirection: 'row',
+  },
+  inputFlex: {
+    alignSelf: 'stretch',
+    width: '100%',
+    padding: 0,
+    backgroundColor: '#ddd',
+  },
+  visibilityBtn: {
+    position: 'absolute',
+    right: 7,
+    height: 22,
+    width: 22,
+    padding: 0,
+    marginTop: 29.5,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    marginTop: 10,
   },
 });
 
