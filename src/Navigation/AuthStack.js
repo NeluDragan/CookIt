@@ -11,6 +11,7 @@ const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* <Stack.Screen name="Onboarding" component={OnboardingScreen} /> */}
+
       <Stack.Screen name="Login" component={SignInScreen} />
       <Stack.Screen name="Register" component={SignUpScreen} />
     </Stack.Navigator>

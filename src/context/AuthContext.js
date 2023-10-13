@@ -6,10 +6,11 @@ export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [userToken, setUserToken] = React.useState(null);
-  const login = () => {
+  const login = token => {
     setIsLoading(true);
-    setUserToken('fgkj');
-    AsyncStorage.setItem('userToken', 'fgkj');
+    setUserToken(token);
+    AsyncStorage.setItem('userToken', token);
+    console.log('token', token);
     setIsLoading(false);
   };
 
@@ -24,7 +25,6 @@ export const AuthProvider = ({children}) => {
     try {
       setIsLoading(true);
       const token = await AsyncStorage.getItem('userToken');
-
       setUserToken(token);
       setIsLoading(false);
     } catch (err) {

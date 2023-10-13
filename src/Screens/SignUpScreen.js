@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,35 @@ import {
 } from 'react-native';
 import ButtonAtom from '../Components/Atoms/ButtonAtom';
 import InputAtom from '../Components/Atoms/InputAtom';
+import axios from 'axios';
+import {AuthContext} from '../context/AuthContext';
 
 import BackgroungIMG from '../images/bg.jpg';
 
 const SignUpScreen = ({navigation}) => {
+  const {login} = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
-  const handleSignUp = () => {
-    // Implement your sign-up logic here
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/createUser', {
+        email,
+        password,
+        name: username,
+      });
+
+      // Handle the response as needed, e.g., show a success message or navigate to another screen.
+      console.log('Sign-up successful:', response.data);
+      const {token, user} = response.data;
+      console.log('token', token);
+      login(token, user);
+    } catch (error) {
+      // Handle sign-up error, e.g., show an error message.
+      console.error('Sign-up error:', error);
+    }
   };
 
   const togglePasswordVisibility = () => {

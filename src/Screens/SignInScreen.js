@@ -9,7 +9,7 @@ import {
   ImageBackground,
   SafeAreaView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
 import Logo from '../images/logo.png';
 import InputAtom from '../Components/Atoms/InputAtom';
@@ -23,8 +23,9 @@ const SignInScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {height} = useWindowDimensions();
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState('eye');
+  const [loginError, setLoginError] = useState(null);
 
   const handleSignUpPress = () => {
     navigation.navigate('Register');
@@ -33,6 +34,22 @@ const SignInScreen = ({navigation}) => {
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
     setRightIcon(passwordVisibility ? 'eye-off' : 'eye');
+  };
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/signIn', {
+        email: username,
+        password: password,
+      });
+
+      const {token, user} = response.data;
+      login(token, user);
+      setLoginError(null);
+      // navigation.navigate('Home');
+    } catch (error) {
+      console.error('Login error:', error);
+      setLoginError('Login failed. Please check your credentials.');
+    }
   };
 
   return (
@@ -43,6 +60,7 @@ const SignInScreen = ({navigation}) => {
           style={[styles.logo, {height: height * 0.15}]}
           resizeMode="contain"
         />
+        <Text style={styles.errorText}>{loginError}</Text>
 
         <View style={styles.loginContainer}>
           <InputAtom
@@ -73,12 +91,7 @@ const SignInScreen = ({navigation}) => {
 
           <SafeAreaView style={styles.mainContainer}>
             <View style={styles.button}>
-              <ButtonAtom
-                label="Log In"
-                onPress={() => {
-                  login();
-                }}
-              />
+              <ButtonAtom label="Log In" onPress={handleLogin} />
             </View>
           </SafeAreaView>
         </View>
