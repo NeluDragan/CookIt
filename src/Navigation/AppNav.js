@@ -3,6 +3,7 @@ import {Text, View, ActivityIndicator} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
 import AuthStack from './AuthStack';
+import HomeScreen from '../Screens/HomeScreen';
 import AppStack from './AppStack';
 import {AuthContext} from '../context/AuthContext';
 
@@ -19,7 +20,7 @@ const AppNav = () => {
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <AppStack /> : <AuthStack />}
+      {userToken !== null ? <HomeScreen /> : <AuthStack />}
     </NavigationContainer>
   );
 };
