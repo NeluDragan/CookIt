@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,20 +11,22 @@ import RecipeRow from './RecipeRow';
 import axios from 'axios';
 
 const RecipeList = ({navigation, title}) => {
-  // An array of recipe data (you can fetch this data from an API or your data source)
-  const [recipes, setRecipes] = React.useState([]);
+  const [recipes, setRecipes] = useState([]);
 
-  React.useEffect(() => {
-    // Efectuează cererea HTTP pentru a obține retetele de la server
+  useEffect(() => {
     axios
-      .get('URL_API_Retete')
+      .get('http://localhost:3001/recipe')
       .then(response => {
-        setRecipes(response.data); // Setează retetele în starea componentei
+        // Filtrăm rețetele în funcție de tipul specificat
+        const filteredRecipes = response.data.filter(
+          recipe => recipe.type === title,
+        );
+        setRecipes(filteredRecipes);
       })
       .catch(error => {
         console.error('Eroare la obținerea retetelor:', error);
       });
-  }, []);
+  });
 
   return (
     <View style={styles.container}>
@@ -38,11 +40,9 @@ const RecipeList = ({navigation, title}) => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView
-        contentContainerStyle={styles.scrollViewContainer}
-        horizontal={true}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer} horizontal>
         {recipes.map(recipe => (
-          <RecipeRow key={recipe.id} navigation={navigation} recipe={recipe} />
+          <RecipeRow key={recipe._id} navigation={navigation} recipe={recipe} />
         ))}
       </ScrollView>
     </View>
@@ -51,7 +51,7 @@ const RecipeList = ({navigation, title}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', // Stack children vertically
+    flexDirection: 'column',
     position: 'relative',
     marginVertical: 22,
   },

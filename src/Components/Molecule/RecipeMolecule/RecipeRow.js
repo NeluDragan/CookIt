@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 const RecipeRow = ({navigation, recipe}) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const handleRecipeInfoPress = () => {
     if (navigation) {
       navigation.navigate('RecipeInfo');
@@ -10,9 +12,25 @@ const RecipeRow = ({navigation, recipe}) => {
     }
   };
 
+  const handleFavoritePress = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <TouchableOpacity style={styles.container} onPress={handleRecipeInfoPress}>
-      <Image source={recipe.image} style={styles.recipeImage} />
+      <Image source={{uri: recipe.image}} style={styles.recipeImage} />
+      <TouchableOpacity
+        style={styles.favoriteButton}
+        onPress={handleFavoritePress}>
+        <Image
+          source={
+            isFavorite
+              ? require('../../../images/icons/reciepeList/favourite_filled.png')
+              : require('../../../images/icons/reciepeList/favourite.png')
+          }
+          style={styles.favoriteIcon}
+        />
+      </TouchableOpacity>
       <View style={styles.textContainer}>
         <View style={styles.recipeNameOverlay}>
           <Text style={styles.recipeName}>{recipe.name}</Text>
@@ -35,6 +53,18 @@ const styles = StyleSheet.create({
     height: 160,
     borderRadius: 5,
     marginRight: 10,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  favoriteIcon: {
+    width: 20,
+    height: 20,
+    marginEnd: 25,
+    marginTop: 15,
   },
   recipeNameOverlay: {
     position: 'absolute',
