@@ -5,33 +5,37 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import RecipeRow from './RecipeRow';
+import axios from 'axios';
 
 const RecipeList = ({navigation, title}) => {
   // An array of recipe data (you can fetch this data from an API or your data source)
-  const recipes = [
-    {
-      id: 1,
-      name: 'Recipe 1',
-      description: 'Description 1',
-      image: require('../../../images/recipe/recipe1.jpg'),
-    },
-    {
-      id: 2,
-      name: 'Recipe 2',
-      description: 'Description 2',
-      image: require('../../../images/recipe/recipe2.jpg'),
-    },
-    // Add more recipe data
-  ];
+  const [recipes, setRecipes] = React.useState([]);
+
+  React.useEffect(() => {
+    // Efectuează cererea HTTP pentru a obține retetele de la server
+    axios
+      .get('URL_API_Retete')
+      .then(response => {
+        setRecipes(response.data); // Setează retetele în starea componentei
+      })
+      .catch(error => {
+        console.error('Eroare la obținerea retetelor:', error);
+      });
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <TouchableOpacity>
-          <Text style={styles.showAllButton}>See All</Text>
+        <TouchableOpacity style={styles.TouchableOpacity}>
+          <Text style={styles.showAllButton}>See all</Text>
+          <Image
+            source={require('../../../images/icons/reciepeList/next.png')}
+            style={styles.nextIcon}
+          />
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -63,10 +67,17 @@ const styles = StyleSheet.create({
   },
   showAllButton: {
     fontSize: 14,
-    marginEnd: 10,
   },
   scrollViewContainer: {
-    flexDirection: 'row', // Stack children horizontally
+    flexDirection: 'row',
+  },
+  nextIcon: {
+    width: 17,
+    height: 17,
+  },
+  TouchableOpacity: {
+    flexDirection: 'row',
+    marginEnd: 7,
   },
 });
 

@@ -16,7 +16,7 @@ import InputAtom from '../Components/Atoms/InputAtom';
 import ButtonAtom from '../Components/Atoms/ButtonAtom';
 import {AuthContext} from '../context/AuthContext';
 
-import BackgroundImage from '../images/bg1.jpg';
+import BackgroundImage from '../images/background/bg1.jpg';
 
 const SignInScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);

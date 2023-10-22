@@ -1,89 +1,72 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   TextInput,
-  Button,
+  Image,
   Keyboard,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import {Feather, Entypo} from '@expo/vector-icons';
 
-const SearchBarMolecule = ({
-  clicked,
-  searchPhrase,
-  setSearchPhrase,
-  setClicked,
-}) => {
+const SearchBarMolecule = ({searchPhrase, setSearchPhrase}) => {
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleTextInputFocus = () => {
+    if (isTyping) {
+      setSearchPhrase('');
+    }
+    setIsTyping(true);
+  };
+
   return (
-    <View style={styles.container}>
-      <View
-        style={
-          clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
-        }>
-        <Feather
-          name="search"
-          size={20}
-          color="black"
-          style={{marginLeft: 1}}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Search"
-          value={searchPhrase}
-          onChangeText={setSearchPhrase}
-          onFocus={() => {
-            setClicked(true);
-          }}
-        />
-        {clicked && (
-          <TouchableOpacity onPress={() => setSearchPhrase('')}>
-            <Entypo name="cross" size={20} color="black" style={{padding: 1}} />
-          </TouchableOpacity>
-        )}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.searchBar}>
+          <Image
+            source={require('../../images/icons/search/search.png')}
+            style={styles.icon}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Search recipes"
+            value={searchPhrase}
+            onChangeText={setSearchPhrase}
+            onFocus={handleTextInputFocus}
+          />
+          <Image
+            source={require('../../images/icons/search/edit.png')}
+            style={styles.icon}
+          />
+        </View>
       </View>
-      {clicked && (
-        <Button
-          title="Cancel"
-          onPress={() => {
-            Keyboard.dismiss();
-            setClicked(false);
-          }}
-        />
-      )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     margin: 10,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
     width: '95%',
   },
-  searchBar__unclicked: {
+  searchBar: {
     padding: 8,
     flexDirection: 'row',
     width: '95%',
     backgroundColor: '#d9dbda',
     borderRadius: 10,
     alignItems: 'center',
-  },
-  searchBar__clicked: {
-    padding: 8,
-    flexDirection: 'row',
-    width: '80%',
-    backgroundColor: '#d9dbda',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
   },
   input: {
+    flex: 1,
     fontSize: 15,
     marginLeft: 10,
-    width: '90%',
+  },
+  icon: {
+    width: 13,
+    height: 13,
+    marginHorizontal: 10,
   },
 });
 

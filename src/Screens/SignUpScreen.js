@@ -14,7 +14,7 @@ import InputAtom from '../Components/Atoms/InputAtom';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthContext';
 
-import BackgroungIMG from '../images/bg.jpg';
+import BackgroungIMG from '../images/background/bg.jpg';
 
 const SignUpScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);
