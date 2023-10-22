@@ -6,7 +6,7 @@ const RecipeRow = ({navigation, recipe}) => {
 
   const handleRecipeInfoPress = () => {
     if (navigation) {
-      navigation.navigate('RecipeInfo');
+      navigation.navigate('RecipeInfo', {recipe});
     } else {
       console.log('Navigation is not available');
     }
@@ -16,9 +16,13 @@ const RecipeRow = ({navigation, recipe}) => {
     setIsFavorite(!isFavorite);
   };
 
+  const recipeImage = recipe.image
+    ? {uri: recipe.image}
+    : require('../../../images/recipe/defaultimage.png');
+
   return (
     <TouchableOpacity style={styles.container} onPress={handleRecipeInfoPress}>
-      <Image source={{uri: recipe.image}} style={styles.recipeImage} />
+      <Image source={recipeImage} style={styles.recipeImage} />
       <TouchableOpacity
         style={styles.favoriteButton}
         onPress={handleFavoritePress}>

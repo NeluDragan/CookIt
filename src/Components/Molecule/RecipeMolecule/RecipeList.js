@@ -26,7 +26,7 @@ const RecipeList = ({navigation, title}) => {
       .catch(error => {
         console.error('Eroare la obținerea retetelor:', error);
       });
-  });
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import AuthStack from './AuthStack';
 import Tabs from './Tabs';
+import AppNavigator from './AppNavigator';
 import {AuthContext} from '../context/AuthContext';
 
 const AppNav = () => {
