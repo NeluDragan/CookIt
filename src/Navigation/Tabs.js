@@ -16,8 +16,16 @@ const Tabs = () => {
   };
   return (
     <Tab.Navigator
-      tabBarOptions={tabBarOptions}
-      screenOptions={{headerShown: false}}>
+      screenOptions={({route}) => ({
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            display: 'flex',
+          },
+          null,
+        ],
+        headerShown: false,
+      })}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}

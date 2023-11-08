@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {AuthContext} from '../../../context/AuthContext';
+import axios from 'axios'; // Asigurați-vă că ați importat axios
+import SignInScreen from '../../../Screens/SignInScreen';
 
 const RecipeRow = ({navigation, recipe}) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const {userToken} = useContext(AuthContext);
 
   const handleRecipeInfoPress = () => {
     if (navigation) {
@@ -12,8 +16,45 @@ const RecipeRow = ({navigation, recipe}) => {
     }
   };
 
-  const handleFavoritePress = () => {
-    setIsFavorite(!isFavorite);
+  const handleFavoritePress = async () => {
+    try {
+      if (!userToken) {
+        console.error('Autentificare necesară.');
+        return;
+      }
+      const headers = {
+        Authorization: `${userToken}`,
+      };
+      const action = isFavorite ? 'remove' : 'add';
+      const response = await axios.post(
+        'http://localhost:3001/handleFavoriteRecipes',
+        {
+          recipeId: recipe._id,
+          action,
+        },
+        {
+          headers,
+        },
+      );
+      if (
+        response.data.message ===
+        'Rețeta a fost adăugată la favorite cu succes.'
+      ) {
+        setIsFavorite(true);
+        console.log('Rețeta a fost adăugată la favorite cu succes.');
+      } else if (
+        response.data.message ===
+        'Rețeta a fost eliminată din favorite cu succes.'
+      ) {
+        setIsFavorite(false);
+        console.log('Rețeta a fost eliminată din favorite cu succes.');
+      }
+    } catch (error) {
+      console.error(
+        'Eroare la adăugarea/eliminarea rețetei din favorite:',
+        error.response.data,
+      );
+    }
   };
 
   const recipeImage = recipe.image
