@@ -65,6 +65,7 @@ const FavoriteRecipesScreen = ({navigation}) => {
 
   useEffect(() => {
     loadFavoriteRecipes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

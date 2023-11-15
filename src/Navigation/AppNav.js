@@ -6,6 +6,7 @@ import AuthStack from './AuthStack';
 import Tabs from './Tabs';
 import AppNavigator from './AppNavigator';
 import {AuthContext} from '../context/AuthContext';
+import StackNavigation from './StackNavigation';
 
 const AppNav = () => {
   const {isLoading, userToken} = useContext(AuthContext);
@@ -20,7 +21,7 @@ const AppNav = () => {
 
   return (
     <NavigationContainer>
-      {userToken !== null ? <Tabs /> : <AuthStack />}
+      {userToken !== null ? <StackNavigation /> : <AuthStack />}
     </NavigationContainer>
   );
 };

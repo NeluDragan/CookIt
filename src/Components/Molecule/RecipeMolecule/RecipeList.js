@@ -32,7 +32,11 @@ const RecipeList = ({navigation, title}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <TouchableOpacity style={styles.TouchableOpacity}>
+        <TouchableOpacity
+          style={styles.TouchableOpacity}
+          onPress={() => {
+            navigation.navigate('AllRecipes', {title}); // Adjust the screen name as needed
+          }}>
           <Text style={styles.showAllButton}>See all</Text>
           <Image
             source={require('../../../images/icons/reciepeList/next.png')}

@@ -7,7 +7,7 @@ import {AuthContext} from '../context/AuthContext';
 import RecipeList from '../Components/Molecule/RecipeMolecule/RecipeList';
 import SearchBarMolecule from '../Components/Molecule/SearchBarMolecule';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {logout} = useContext(AuthContext);
   const [recipesByType, setRecipesByType] = useState({});
 
@@ -69,18 +69,22 @@ const HomeScreen = () => {
       <ScrollView style={styles.scrollContainer}>
         {Object.entries(recipesByType).map(([type, recipes]) => (
           <View key={type}>
-            <RecipeList title={type} recipes={recipes} />
+            <RecipeList
+              title={type}
+              recipes={recipes}
+              navigation={navigation}
+            />
           </View>
         ))}
       </ScrollView>
 
-      <ButtonAtom
+      {/* <ButtonAtom
         label="Logout"
         onPress={() => {
           logout();
         }}
         style={styles.logoutButton}
-      />
+      /> */}
     </View>
   );
 };
