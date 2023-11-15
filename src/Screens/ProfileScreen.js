@@ -1,38 +1,49 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {SECONDARY_COLOR_2} from '../Components/Style/Colors';
 import axios from 'axios';
+import {AuthContext} from '../context/AuthContext';
 
 const ProfileScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
-  const [mail, setMail] = useState('team@gmail.com'); // TODO: Replace with the user's email
+  const [mail, setMail] = useState('');
+
+  const {userToken} = useContext(AuthContext);
 
   useEffect(() => {
-    // Fetch user information from the backend API
-    axios
-      .get('http://localhost:3001/user/' + mail)
-      .then(response => {
-        // Assuming your backend returns user information with a 'name' property
-        setUserName(response.data.name);
-      })
-      .catch(error => {
-        console.error('Error fetching user information:', error);
-      });
-  }, [mail]); // Empty dependency array to run the effect only once when the component mounts
+    if (userToken) {
+      axios
+        .get('http://localhost:3001/getUserByToken', {
+          headers: {
+            Authorization: userToken,
+          },
+        })
+        .then(response => {
+          const {name, email} = response.data;
+          setUserName(name);
+          setMail(email);
+        })
+        .catch(error => {
+          console.error('Error fetching user information:', error);
+        });
+    }
+  }, [userToken]);
 
   const navigateToScreen = screenName => {
-    navigation.navigate(screenName);
+    navigation.navigate(screenName, {
+      name: userName,
+      email: mail,
+    });
   };
 
   return (
     <View style={styles.container}>
       <Image
-        source={require('../images/profile/user.png')} // înlocuiește cu calea către imaginea profilului
+        source={require('../images/profile/user.png')}
         style={styles.profileImage}
       />
       <Text style={styles.profileText}>{userName}</Text>
 
-      {/* Butoane pentru funcționalitățile dorite */}
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigateToScreen('Account')}>

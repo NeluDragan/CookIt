@@ -17,7 +17,6 @@ const RecipeList = ({navigation, title}) => {
     axios
       .get('http://localhost:3001/recipe')
       .then(response => {
-        // Filtrăm rețetele în funcție de tipul specificat
         const filteredRecipes = response.data.filter(
           recipe => recipe.type === title,
         );
@@ -26,7 +25,7 @@ const RecipeList = ({navigation, title}) => {
       .catch(error => {
         console.error('Eroare la obținerea retetelor:', error);
       });
-  }, []);
+  }, [title]);
 
   return (
     <View style={styles.container}>
@@ -35,7 +34,7 @@ const RecipeList = ({navigation, title}) => {
         <TouchableOpacity
           style={styles.TouchableOpacity}
           onPress={() => {
-            navigation.navigate('AllRecipes', {title}); // Adjust the screen name as needed
+            navigation.navigate('AllRecipes', {title});
           }}>
           <Text style={styles.showAllButton}>See all</Text>
           <Image

@@ -11,29 +11,6 @@ const FavoriteRecipesScreen = ({navigation}) => {
     navigation.navigate('RecipeDetail', {recipeId});
   };
 
-  // const handleRemoveFavorite = recipeId => {
-  //   try {
-  //     axios
-  //       .post(
-  //         'http://localhost:3001/removeFavoriteRecipe',
-  //         {recipeId},
-  //         {
-  //           headers: {
-  //             Authorization: `${userToken}`,
-  //           },
-  //         },
-  //       )
-  //       .then(() => {
-  //         loadFavoriteRecipes();
-  //       });
-  //   } catch (error) {
-  //     console.error(
-  //       'Eroare la eliminarea rețetei din favorite:',
-  //       error.response.data,
-  //     );
-  //   }
-  // };
-
   const loadFavoriteRecipes = async () => {
     try {
       if (!userToken) {
