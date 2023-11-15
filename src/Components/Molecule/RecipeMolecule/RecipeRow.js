@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
-import axios from 'axios'; // Asigurați-vă că ați importat axios
+import axios from 'axios';
 import SignInScreen from '../../../Screens/SignInScreen';
 
 const RecipeRow = ({navigation, recipe}) => {
@@ -9,10 +9,11 @@ const RecipeRow = ({navigation, recipe}) => {
   const {userToken} = useContext(AuthContext);
 
   const handleRecipeInfoPress = () => {
-    if (navigation) {
+    console.log(navigation, recipe);
+    if (navigation && recipe) {
       navigation.navigate('RecipeInfo', {recipe});
     } else {
-      console.log('Navigation is not available');
+      console.log('Navigation or recipe is not available');
     }
   };
 
@@ -56,6 +57,9 @@ const RecipeRow = ({navigation, recipe}) => {
       );
     }
   };
+  const navigateToScreen = screenName => {
+    navigation.navigate(screenName);
+  };
 
   const recipeImage = recipe.image
     ? {uri: recipe.image}
@@ -96,8 +100,7 @@ const styles = StyleSheet.create({
   recipeImage: {
     width: 300,
     height: 160,
-    borderRadius: 5,
-    marginRight: 10,
+    borderRadius: 9,
   },
   favoriteButton: {
     position: 'absolute',
@@ -120,6 +123,8 @@ const styles = StyleSheet.create({
   },
   recipeName: {
     fontSize: 25,
+    width: 300,
+    marginLeft: 10,
     fontWeight: 'bold',
     color: 'white',
   },
