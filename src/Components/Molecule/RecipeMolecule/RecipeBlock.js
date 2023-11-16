@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
 
-const RecipeRow = ({navigation, recipe}) => {
+const RecipeBlock = ({navigation, recipe}) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const {userToken} = useContext(AuthContext);
 
@@ -60,13 +60,14 @@ const RecipeRow = ({navigation, recipe}) => {
     navigation.navigate(screenName);
   };
 
-  const recipeImage = recipe.image
+  const recipeImage = recipe?.image
     ? {uri: recipe.image}
     : require('../../../images/recipe/defaultimage.png');
 
   return (
     <TouchableOpacity style={styles.container} onPress={handleRecipeInfoPress}>
       <Image source={recipeImage} style={styles.recipeImage} />
+      <Text style={styles.preparationTime}>{recipe.preparationTime} min</Text>
       <TouchableOpacity
         style={styles.favoriteButton}
         onPress={handleFavoritePress}>
@@ -82,9 +83,6 @@ const RecipeRow = ({navigation, recipe}) => {
       <View style={styles.textContainer}>
         <View style={styles.recipeNameOverlay}>
           <Text style={styles.recipeName}>{recipe.name}</Text>
-          <Text style={styles.preparationTime}>
-            {recipe.preparationTime} min
-          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -95,13 +93,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
-    height: 170,
-    maxHeight: 170,
+    height: 235,
+    maxHeight: 250,
     borderBottomColor: '#ccc',
   },
   recipeImage: {
-    width: 300,
-    height: 160,
+    width: 150,
+    height: 190,
     borderRadius: 9,
   },
   favoriteButton: {
@@ -113,31 +111,33 @@ const styles = StyleSheet.create({
   favoriteIcon: {
     width: 20,
     height: 20,
-    marginEnd: 25,
-    marginTop: 15,
+    marginEnd: 15,
+    marginTop: 155,
   },
   recipeNameOverlay: {
     position: 'absolute',
-    bottom: 0,
-    left: -300,
+    bottom: -10,
+    left: -165,
     padding: 5,
     borderRadius: 5,
-    flexDirection: 'row',
   },
   recipeName: {
-    fontSize: 25,
+    fontSize: 18,
     width: 300,
     marginLeft: 10,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   preparationTime: {
-    fontSize: 14,
-    marginLeft: -85,
-    marginTop: 12,
+    position: 'absolute',
+    top: 165,
+    left: 20,
+    padding: 5,
+    borderRadius: 5,
+    fontSize: 12,
     fontWeight: 'bold',
     color: 'white',
   },
 });
 
-export default RecipeRow;
+export default RecipeBlock;
