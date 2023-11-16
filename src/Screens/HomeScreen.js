@@ -74,14 +74,6 @@ const HomeScreen = ({navigation}) => {
           </View>
         ))}
       </ScrollView>
-
-      <ButtonAtom
-        label="Logout"
-        onPress={() => {
-          logout();
-        }}
-        style={styles.logoutButton}
-      />
     </View>
   );
 };
