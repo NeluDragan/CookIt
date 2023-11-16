@@ -3,8 +3,6 @@ import {View, ActivityIndicator} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
 import AuthStack from './AuthStack';
-import Tabs from './Tabs';
-import AppNavigator from './AppNavigator';
 import {AuthContext} from '../context/AuthContext';
 import StackNavigation from './StackNavigation';
 

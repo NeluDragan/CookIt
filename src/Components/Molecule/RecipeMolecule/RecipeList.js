@@ -10,7 +10,7 @@ import {
 import RecipeRow from './RecipeRow';
 import axios from 'axios';
 
-const RecipeList = ({navigation, title}) => {
+const RecipeList = ({navigation, title, type}) => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -27,6 +27,8 @@ const RecipeList = ({navigation, title}) => {
       });
   }, [title]);
 
+  console.log(type);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -34,7 +36,7 @@ const RecipeList = ({navigation, title}) => {
         <TouchableOpacity
           style={styles.TouchableOpacity}
           onPress={() => {
-            navigation.navigate('SeeAllType', {title});
+            navigation.navigate('SeeAllType', {type});
           }}>
           <Text style={styles.showAllButton}>See all</Text>
           <Image

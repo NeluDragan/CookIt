@@ -3,10 +3,12 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {SECONDARY_COLOR_2} from '../Components/Style/Colors';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthContext';
+import ButtonAtom from '../Components/Atoms/ButtonAtom';
 
 const ProfileScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [mail, setMail] = useState('');
+  const {logout} = useContext(AuthContext);
 
   const {userToken} = useContext(AuthContext);
 
@@ -96,6 +98,13 @@ const ProfileScreen = ({navigation}) => {
           style={styles.nextIcon}
         />
       </TouchableOpacity>
+      <ButtonAtom
+        label="Logout"
+        onPress={() => {
+          logout();
+        }}
+        style={styles.logoutButton}
+      />
     </View>
   );
 };
@@ -139,6 +148,9 @@ const styles = StyleSheet.create({
   nextIcon: {
     width: 17,
     height: 17,
+  },
+  logoutButton: {
+    padding: 18,
   },
 });
 

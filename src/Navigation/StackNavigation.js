@@ -1,7 +1,5 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from '../Screens/HomeScreen';
-import ProfileScreen from '../Screens/ProfileScreen';
 import Tabs from './Tabs';
 import Account from '../Components/Molecule/Profile/Account';
 import RecipeInfo from '../Components/Organism/RecipeInfo';
@@ -49,6 +47,7 @@ const StackNavigation = () => {
           options={{headerShown: false}}
         />
       </Stack.Group>
+
       <Stack.Group>
         <Stack.Screen
           name="RecipeInfo"
@@ -56,6 +55,7 @@ const StackNavigation = () => {
           options={{headerShown: false}}
         />
       </Stack.Group>
+
       <Stack.Group>
         <Stack.Screen
           name="SeeAllType"

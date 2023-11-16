@@ -1,18 +1,14 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import axios from 'axios';
-
-import ButtonAtom from '../Components/Atoms/ButtonAtom';
-import {AuthContext} from '../context/AuthContext';
 import RecipeList from '../Components/Molecule/RecipeMolecule/RecipeList';
 import SearchBarMolecule from '../Components/Molecule/SearchBarMolecule';
 
 const HomeScreen = ({navigation}) => {
-  const {logout} = useContext(AuthContext);
   const [recipesByType, setRecipesByType] = useState({});
-
   const [searchPhrase, setSearchPhrase] = useState('');
   const [clicked, setClicked] = useState(false);
+
   useEffect(() => {
     axios
       .get('http://localhost:3001/recipe')
@@ -73,18 +69,11 @@ const HomeScreen = ({navigation}) => {
               title={type}
               recipes={recipes}
               navigation={navigation}
+              type={type}
             />
           </View>
         ))}
       </ScrollView>
-
-      {/* <ButtonAtom
-        label="Logout"
-        onPress={() => {
-          logout();
-        }}
-        style={styles.logoutButton}
-      /> */}
     </View>
   );
 };
@@ -97,9 +86,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-  },
-  logoutButton: {
-    marginTop: 20, // Adjust the margin as needed
   },
 });
 

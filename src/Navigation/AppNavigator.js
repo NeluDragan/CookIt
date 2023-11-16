@@ -1,8 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import RecipeInfo from '../Components/Organism/RecipeInfo';
 import HomeScreen from '../Screens/HomeScreen';
-import {NavigationContainer} from '@react-navigation/native';
 import Tabs from './Tabs';
 
 const AppNavigator = () => {
