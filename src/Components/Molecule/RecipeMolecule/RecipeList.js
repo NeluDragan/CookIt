@@ -34,7 +34,7 @@ const RecipeList = ({navigation, title}) => {
         <TouchableOpacity
           style={styles.TouchableOpacity}
           onPress={() => {
-            navigation.navigate('AllRecipes', {title});
+            navigation.navigate('SeeAllType', {title});
           }}>
           <Text style={styles.showAllButton}>See all</Text>
           <Image

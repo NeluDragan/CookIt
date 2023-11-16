@@ -9,6 +9,7 @@ import Notifications from '../Components/Molecule/Profile/Notifications';
 import Preferences from '../Components/Molecule/Profile/Preferences';
 import About from '../Components/Molecule/Profile/About';
 import Feedback from '../Components/Molecule/Profile/Feedback';
+import SeeAllType from '../Components/Organism/SeeAllType';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,13 @@ const StackNavigation = () => {
         <Stack.Screen
           name="RecipeInfo"
           component={RecipeInfo}
+          options={{headerShown: false}}
+        />
+      </Stack.Group>
+      <Stack.Group>
+        <Stack.Screen
+          name="SeeAllType"
+          component={SeeAllType}
           options={{headerShown: false}}
         />
       </Stack.Group>
