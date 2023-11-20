@@ -5,7 +5,7 @@ import axios from 'axios';
 import IngredientsContent from '../Molecule/RecipeDetails/Ingredients';
 import InstructionsContent from '../Molecule/RecipeDetails/Instructions';
 import HealthScoreContent from '../Molecule/RecipeDetails/HealthScore';
-import {PRIMARY_COLOR, PRIMARY_COLOR_2} from '../Style/Colors';
+import {PRIMARY_COLOR} from '../Style/Colors';
 
 const RecipeInfo = ({route}) => {
   const {recipe} = route.params;
@@ -117,17 +117,13 @@ const RecipeInfo = ({route}) => {
         </TouchableOpacity>
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginTop: 10,
-        }}>
+      <View style={styles.tabsContainer}>
         <TouchableOpacity onPress={() => setActiveTab('ingredients')}>
           <View style={styles.tabTitle}>
             <Text
               style={{
                 color: activeTab === 'ingredients' ? PRIMARY_COLOR : 'black',
+                fontWeight: 'bold',
               }}>
               {recipe.ingredients.length}
             </Text>
@@ -144,6 +140,7 @@ const RecipeInfo = ({route}) => {
             <Text
               style={{
                 color: activeTab === 'instructions' ? PRIMARY_COLOR : 'black',
+                fontWeight: 'bold',
               }}>
               {recipe.preparationTime}
             </Text>
@@ -156,8 +153,14 @@ const RecipeInfo = ({route}) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab('healthScore')}>
-          <View>
-            <Text></Text>
+          <View style={styles.tabTitle}>
+            <Text
+              style={{
+                color: activeTab === 'healthScore' ? PRIMARY_COLOR : 'black',
+                fontWeight: 'bold',
+              }}>
+              8
+            </Text>
             <Text
               style={{
                 color: activeTab === 'healthScore' ? PRIMARY_COLOR : 'black',
@@ -180,6 +183,11 @@ const styles = StyleSheet.create({
     height: 170,
     maxHeight: 170,
     borderBottomColor: '#ccc',
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
   recipeImage: {
     width: '100%',
@@ -219,6 +227,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     alignItems: 'center',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
   },
 });
 

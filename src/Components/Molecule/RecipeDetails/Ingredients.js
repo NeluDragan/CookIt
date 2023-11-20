@@ -19,7 +19,7 @@ const IngredientsContent = ({ingredientsDetails, recipe}) => {
     <View>
       <View style={styles.servingsContainer}>
         <View>
-          <Text style={styles.servingsText}>{servings} Servings</Text>
+          <Text style={styles.servingsText}>{servings} Serving(s)</Text>
         </View>
         <View style={styles.buttonsContainer}>
           <TouchableOpacity onPress={handleDecreaseServings}>
@@ -34,10 +34,13 @@ const IngredientsContent = ({ingredientsDetails, recipe}) => {
         <View style={styles.ingredientContainer} key={ingredient._id || index}>
           <Image source={{uri: ingredient.photo}} style={styles.image} />
           <Text style={styles.ingredientText}>
-            {ingredient.name} -{' '}
             {recipe.ingredients.find(item => item.id === ingredient._id)
               .quantity * servings}{' '}
-            {ingredient.unit}
+            {ingredient.name}
+            {recipe.ingredients.find(item => item.id === ingredient._id)
+              .quantity > 1 &&
+              ingredient.unit === 'piece' &&
+              's'}
           </Text>
         </View>
       ))}
@@ -49,7 +52,8 @@ const styles = StyleSheet.create({
   ingredientContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    margin: 7,
+    marginHorizontal: 15,
   },
   image: {
     width: 25,
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
   servingsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginVertical: 10,
     justifyContent: 'space-between',
     marginHorizontal: 13,
   },
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   servingsText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
