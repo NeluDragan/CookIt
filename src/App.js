@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
 import {View, Button, Text, StyleSheet} from 'react-native';
+import {useFonts} from 'expo-font';
 
 import {AuthProvider} from './context/AuthContext';
 import AppNav from './Navigation/AppNav';
 
 const App = () => {
   return (
-    <AuthProvider>
+    <AuthProvider styles={styles.container}>
       <AppNav />
     </AuthProvider>
   );
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Futura',
+    fontFamily: 'Roboto',
     maxWidth: '100%',
   },
   title: {

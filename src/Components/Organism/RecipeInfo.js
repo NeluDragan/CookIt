@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {AuthContext} from '../../context/AuthContext';
@@ -5,7 +6,7 @@ import axios from 'axios';
 import IngredientsContent from '../Molecule/RecipeDetails/Ingredients';
 import InstructionsContent from '../Molecule/RecipeDetails/Instructions';
 import HealthScoreContent from '../Molecule/RecipeDetails/HealthScore';
-import {PRIMARY_COLOR} from '../Style/Colors';
+import {PRIMARY_COLOR, SECONDARY_COLOR_2} from '../Style/Colors';
 
 const RecipeInfo = ({route}) => {
   const {recipe} = route.params;
@@ -13,7 +14,6 @@ const RecipeInfo = ({route}) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const {userToken} = useContext(AuthContext);
   const [ingredientsDetails, setIngredientsDetails] = useState([]);
-  console.log(recipe);
 
   const fetchIngredientDetails = async () => {
     try {
@@ -34,6 +34,7 @@ const RecipeInfo = ({route}) => {
 
   useEffect(() => {
     fetchIngredientDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipe.ingredients]);
 
   const renderContent = () => {
@@ -142,7 +143,7 @@ const RecipeInfo = ({route}) => {
                 color: activeTab === 'instructions' ? PRIMARY_COLOR : 'black',
                 fontWeight: 'bold',
               }}>
-              {recipe.preparationTime}
+              {recipe.preparationTime} min
             </Text>
             <Text
               style={{
@@ -153,14 +154,24 @@ const RecipeInfo = ({route}) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab('healthScore')}>
-          <View style={styles.tabTitle}>
+          <View style={[styles.tabTitle, {marginTop: -10}]}>
             <Text
               style={{
                 color: activeTab === 'healthScore' ? PRIMARY_COLOR : 'black',
                 fontWeight: 'bold',
-              }}>
-              8
-            </Text>
+              }}></Text>
+            <Image
+              source={require('../../images/icons/heart.png')}
+              resizeMode="contain"
+              style={{
+                width: 22,
+                height: 22,
+                tintColor:
+                  activeTab === 'healthScore'
+                    ? PRIMARY_COLOR
+                    : SECONDARY_COLOR_2,
+              }}
+            />
             <Text
               style={{
                 color: activeTab === 'healthScore' ? PRIMARY_COLOR : 'black',
@@ -188,6 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 10,
+    paddingBottom: 20,
   },
   recipeImage: {
     width: '100%',
@@ -227,8 +239,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     alignItems: 'center',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+  },
+  healthScoreText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginLeft: 10,
   },
 });
 

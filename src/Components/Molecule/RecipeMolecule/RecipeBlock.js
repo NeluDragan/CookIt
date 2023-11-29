@@ -92,7 +92,7 @@ const RecipeBlock = ({navigation, recipe}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 11,
     height: 235,
     maxHeight: 250,
     borderBottomColor: '#ccc',
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -10,
     left: -165,
-    padding: 5,
+    padding: 6,
     borderRadius: 5,
   },
   recipeName: {

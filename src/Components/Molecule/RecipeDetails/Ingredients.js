@@ -35,7 +35,15 @@ const IngredientsContent = ({ingredientsDetails, recipe}) => {
           <Image source={{uri: ingredient.photo}} style={styles.image} />
           <Text style={styles.ingredientText}>
             {recipe.ingredients.find(item => item.id === ingredient._id)
-              .quantity * servings}{' '}
+              .quantity * servings}
+            {recipe.ingredients.find(item => item.id === ingredient._id)
+              .quantity > 1 &&
+              ingredient.unit === 'g' &&
+              'g'}
+            {recipe.ingredients.find(item => item.id === ingredient._id)
+              .quantity > 1 &&
+              ingredient.unit === 'ml' &&
+              'ml'}{' '}
             {ingredient.name}
             {recipe.ingredients.find(item => item.id === ingredient._id)
               .quantity > 1 &&
