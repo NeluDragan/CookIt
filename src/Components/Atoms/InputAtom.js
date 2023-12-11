@@ -2,7 +2,13 @@ import React from 'react';
 import {INPUT_BACKGROUND} from '../Style/Colors';
 import {View, TextInput, StyleSheet} from 'react-native';
 
-const InputAtom = ({value, setValue, placeholder, secureTextEntry}) => {
+const InputAtom = ({
+  value,
+  setValue,
+  placeholder,
+  secureTextEntry,
+  keyboardType,
+}) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -11,6 +17,7 @@ const InputAtom = ({value, setValue, placeholder, secureTextEntry}) => {
         placeholder={placeholder}
         onChangeText={setValue}
         secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType}
       />
     </View>
   );

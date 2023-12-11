@@ -27,8 +27,6 @@ const RecipeList = ({navigation, title, type}) => {
       });
   }, [title]);
 
-  console.log(type);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>

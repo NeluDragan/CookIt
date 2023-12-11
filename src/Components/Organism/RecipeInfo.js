@@ -159,7 +159,8 @@ const RecipeInfo = ({route}) => {
               style={{
                 color: activeTab === 'healthScore' ? PRIMARY_COLOR : 'black',
                 fontWeight: 'bold',
-              }}></Text>
+              }}
+            />
             <Image
               source={require('../../images/icons/heart.png')}
               resizeMode="contain"
