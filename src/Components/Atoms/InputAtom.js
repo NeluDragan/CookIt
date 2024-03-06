@@ -8,6 +8,8 @@ const InputAtom = ({
   placeholder,
   secureTextEntry,
   keyboardType,
+  multiline,
+  maxLength,
 }) => {
   return (
     <View style={styles.container}>
@@ -18,6 +20,8 @@ const InputAtom = ({
         onChangeText={setValue}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
+        multiline={multiline}
+        maxLength={maxLength}
       />
     </View>
   );

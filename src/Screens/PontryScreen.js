@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import AddRecipeScreen from '../Components/Organism/AddRecipe';
-import OnboardingAddRecipe from '../Components/Organism/OnboardingAddRecipe';
+import OnboardingAddRecipe from '../Components/Organism/OnBoardingAddRecipe/OnboardingAddRecipe';
 
 const PontryScreen = () => {
   return (
