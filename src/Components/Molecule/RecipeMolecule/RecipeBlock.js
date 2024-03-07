@@ -70,9 +70,6 @@ const RecipeBlock = ({navigation, recipe, isFavorite, setIsFavorite}) => {
       );
     }
   };
-  const navigateToScreen = screenName => {
-    navigation.navigate(screenName);
-  };
 
   const recipeImage = recipe?.image
     ? {uri: recipe.image}
