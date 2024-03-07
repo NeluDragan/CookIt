@@ -1,15 +1,18 @@
-import React, {useEffect} from 'react';
-import {View, Button, Text, StyleSheet} from 'react-native';
-import {useFonts} from 'expo-font';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {NotificationProvider} from 'react-native-internal-notification';
+// import {registerRootComponent} from 'expo'; //for expo
 
 import {AuthProvider} from './context/AuthContext';
 import AppNav from './Navigation/AppNav';
 
 const App = () => {
   return (
-    <AuthProvider styles={styles.container}>
-      <AppNav />
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider styles={styles.container}>
+        <AppNav />
+      </AuthProvider>
+    </NotificationProvider>
   );
 };
 
@@ -28,3 +31,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+// registerRootComponent(App);//for expo

@@ -52,6 +52,7 @@ const FavoriteRecipesScreen = ({navigation}) => {
                 key={recipe._id}
                 navigation={navigation}
                 recipe={recipe}
+                isFavorite={favoriteRecipes}
                 viewType="block"
               />
             ))}
