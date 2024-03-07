@@ -1,14 +1,43 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
 
 const RecipeRow = ({navigation, recipe}) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [checkingFavorites, setCheckingFavorites] = useState([]);
   const {userToken} = useContext(AuthContext);
 
+  useEffect(() => {
+    if (userToken && recipe._id) {
+      const checkFavorite = async () => {
+        try {
+          const headers = {Authorization: userToken};
+          const response = await axios.get(
+            'http://localhost:3001/getFavoriteRecipes',
+            {headers},
+          );
+          const favoriteRecipeIds = response.data.map(recipeID => recipeID._id);
+          setCheckingFavorites(favoriteRecipeIds);
+        } catch (error) {
+          console.error(
+            'Error checking favorite recipes:',
+            error.response.data,
+          );
+        }
+      };
+      checkFavorite();
+    }
+  }, [userToken, recipe._id]);
+
+  useEffect(() => {
+    // Check if the recipe ID exists in the user's list of favorite recipes
+    if (userToken && recipe._id && checkingFavorites.includes(recipe._id)) {
+      setIsFavorite(true);
+    }
+  }, [userToken, recipe._id, checkingFavorites]);
+
   const handleRecipeInfoPress = () => {
-    console.log(navigation, recipe);
     if (navigation && recipe) {
       navigation.navigate('RecipeInfo', {recipe});
     } else {
@@ -22,9 +51,7 @@ const RecipeRow = ({navigation, recipe}) => {
         console.error('Autentificare necesară.');
         return;
       }
-      const headers = {
-        Authorization: `${userToken}`,
-      };
+      const headers = {Authorization: userToken};
       const action = isFavorite ? 'remove' : 'add';
       const response = await axios.post(
         'http://localhost:3001/handleFavoriteRecipes',
@@ -32,9 +59,7 @@ const RecipeRow = ({navigation, recipe}) => {
           recipeId: recipe._id,
           action,
         },
-        {
-          headers,
-        },
+        {headers},
       );
       if (
         response.data.message ===
@@ -55,9 +80,6 @@ const RecipeRow = ({navigation, recipe}) => {
         error.response.data,
       );
     }
-  };
-  const navigateToScreen = screenName => {
-    navigation.navigate(screenName);
   };
 
   const recipeImage = recipe.image

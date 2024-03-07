@@ -1,10 +1,26 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  RefreshControl,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native'; // Import RefreshControl
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
 
-const RecipeBlock = ({navigation, recipe}) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const RecipeBlock = ({navigation, recipe, isFavorite, setIsFavorite}) => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   const {userToken} = useContext(AuthContext);
 
   const handleRecipeInfoPress = () => {
@@ -40,13 +56,11 @@ const RecipeBlock = ({navigation, recipe}) => {
         response.data.message ===
         'Rețeta a fost adăugată la favorite cu succes.'
       ) {
-        setIsFavorite(true);
         console.log('Rețeta a fost adăugată la favorite cu succes.');
       } else if (
         response.data.message ===
         'Rețeta a fost eliminată din favorite cu succes.'
       ) {
-        setIsFavorite(false);
         console.log('Rețeta a fost eliminată din favorite cu succes.');
       }
     } catch (error) {
@@ -65,7 +79,12 @@ const RecipeBlock = ({navigation, recipe}) => {
     : require('../../../images/recipe/defaultimage.png');
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleRecipeInfoPress}>
+    <TouchableOpacity
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={styles.container}
+      onPress={handleRecipeInfoPress}>
       <Image source={recipeImage} style={styles.recipeImage} />
       <Text style={styles.preparationTime}>{recipe.preparationTime} min</Text>
       <TouchableOpacity

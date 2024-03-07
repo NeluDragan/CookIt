@@ -43,6 +43,7 @@ const SignInScreen = ({navigation}) => {
       });
 
       const {token, user} = response.data;
+      console.log(token);
       login(token, user);
       setLoginError(null);
       // navigation.navigate('Home');
