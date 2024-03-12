@@ -1,4 +1,3 @@
-// IngredientSelector.js
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';

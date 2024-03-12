@@ -1,3 +1,6 @@
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {View, Text, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';

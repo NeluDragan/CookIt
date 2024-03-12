@@ -2,21 +2,18 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  TextInput,
   Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
-import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import InputAtom from '../Atoms/InputAtom';
 import SelectDropdown from 'react-native-select-dropdown';
 import IngredientSelection from '../Molecule/NewRecipe/Ingredients';
 
 const AddRecipeScreen = () => {
   const [recipeName, setRecipeName] = useState('');
-  const [ingredients, setIngredients] = useState([]);
   const [preparationTime, setPreparationTime] = useState('');
   const [instructions, setInstructions] = useState([]);
   const [type, setType] = useState('');

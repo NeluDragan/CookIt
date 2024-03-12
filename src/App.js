@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-// import {NotificationProvider} from 'react-native-internal-notification';
 // import {registerRootComponent} from 'expo'; //for expo
 
 import {AuthProvider} from './context/AuthContext';

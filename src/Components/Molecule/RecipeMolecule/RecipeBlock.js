@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native'; // Import RefreshControl
+} from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
 
-const RecipeBlock = ({navigation, recipe, isFavorite, setIsFavorite}) => {
+const RecipeBlock = ({navigation, recipe, isFavorite}) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {

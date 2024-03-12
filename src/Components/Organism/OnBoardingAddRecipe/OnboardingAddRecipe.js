@@ -12,10 +12,6 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedScrollHandler,
-// } from 'react-native-reanimated';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 import InputAtom from '../../Atoms/InputAtom';
@@ -50,7 +46,6 @@ const OnboardingAddRecipe = () => {
 
   useEffect(() => {
     fetchIngredients();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchIngredients = async () => {

@@ -5,7 +5,7 @@ import ButtonAtom from '../../Atoms/ButtonAtom';
 import axios from 'axios';
 import {AuthContext} from '../../../context/AuthContext';
 
-const Account = ({route, navigation}) => {
+const Account = ({route}) => {
   const [newName, setNewName] = useState(route.params?.name || '');
   const [newEmail, setNewEmail] = useState(route.params?.email || '');
   const {userToken} = useContext(AuthContext);

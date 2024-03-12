@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import {ScrollView, SafeAreaView, StyleSheet, StatusBar} from 'react-native';
 import axios from 'axios';
 import NutritionalTable from './NutritionalTable';
 import HealthScoreFlashcard from './HealthScoreFlashcard';
