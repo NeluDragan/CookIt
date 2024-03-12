@@ -12,10 +12,10 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+// import Animated, {
+//   useSharedValue,
+//   useAnimatedScrollHandler,
+// } from 'react-native-reanimated';
 import {SelectList} from 'react-native-dropdown-select-list';
 
 import InputAtom from '../../Atoms/InputAtom';
@@ -24,19 +24,29 @@ import {useInputValues} from './inputValues';
 import ButtonAtom from '../../Atoms/ButtonAtom';
 
 const OnboardingAddRecipe = () => {
-  let defaultTemp = {editingIndex: -1, text: ''};
   const {width: SCREEN_WIDTH} = useWindowDimensions();
-  const x = useSharedValue(0);
   const flatListRef = useRef(null);
-  const {inputValues, setInputValues} = useInputValues(defaultTemp);
+
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: event => {
-      x.value = event.contentOffset.x;
-    },
+  const {inputValues, setInputValues} = useInputValues({
+    editingIndex: -1,
+    text: '',
   });
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+
+  const handleNext = () => {
+    if (currentItemIndex < data.length - 1) {
+      flatListRef.current.scrollTo({
+        x: (currentItemIndex + 1) * SCREEN_WIDTH,
+        animated: true,
+      });
+      setCurrentItemIndex(currentItemIndex + 1);
+    } else {
+      console.log('Final state:', inputValues);
+    }
+  };
 
   useEffect(() => {
     fetchIngredients();
@@ -55,17 +65,6 @@ const OnboardingAddRecipe = () => {
 
   const handleInputChange = (value, key) => {
     setInputValues(prevValues => ({...prevValues, [key]: value}));
-  };
-
-  const handleNext = index => {
-    const currentItem = data[index];
-    handleInputChange(inputValues[currentItem.key], currentItem.key);
-
-    if (index < data.length - 1) {
-      flatListRef.current.scrollToIndex({index: index + 1, animated: true});
-    } else {
-      console.log('Final state:', inputValues);
-    }
   };
 
   const handleAddInput = key => {
@@ -212,33 +211,28 @@ const OnboardingAddRecipe = () => {
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
-        <Animated.FlatList
+        <ScrollView
           ref={flatListRef}
-          onScroll={onScroll}
-          data={data}
-          renderItem={({item, index}) => {
-            return <RenderItem item={item} index={index} />;
-          }}
-          keyExtractor={item => item.id.toString()}
-          scrollEventThrottle={16}
-          horizontal={true}
-          bounces={false}
-          pagingEnabled={true}
+          horizontal
+          pagingEnabled
           showsHorizontalScrollIndicator={false}
-        />
+          contentContainerStyle={{width: SCREEN_WIDTH * data.length}}
+          scrollEventThrottle={16}
+          onScroll={event => {
+            const offsetX = event.nativeEvent.contentOffset.x;
+            const newIndex = Math.floor(offsetX / SCREEN_WIDTH);
+            setCurrentItemIndex(newIndex);
+          }}>
+          {data.map((item, index) => (
+            <RenderItem key={item.key} item={item} index={index} />
+          ))}
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
   container: {
     flex: 1,
   },
@@ -260,16 +254,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-  selector: {
-    marginVertical: 5,
-  },
-  scrollContainer: {
-    maxHeight: 300,
-  },
-  minText: {
-    fontSize: 19,
-    marginLeft: 5,
-  },
   button: {
     marginTop: 20,
     maxWidth: '35%',
@@ -277,6 +261,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  scrollContainer: {
+    maxHeight: 280,
+    marginBottom: 20,
+  },
+  selector: {
+    marginBottom: 9,
+  },
 });
-
 export default OnboardingAddRecipe;
