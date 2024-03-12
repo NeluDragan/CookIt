@@ -2,8 +2,6 @@ import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
-  Button,
-  TextInput,
   StyleSheet,
   ImageBackground,
   TouchableOpacity,

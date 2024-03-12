@@ -191,7 +191,7 @@ const OnboardingAddRecipe = () => {
             </View>
           )}
         </View>
-        {index == data.length - 1 && (
+        {index === data.length - 1 && (
           <View style={styles.button}>
             <ButtonAtom label="Done" onPress={() => handleNext(index)} />
           </View>
