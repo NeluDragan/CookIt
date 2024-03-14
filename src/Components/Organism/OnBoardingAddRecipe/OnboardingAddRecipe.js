@@ -19,6 +19,7 @@ import {data} from '../../../data/recipeData';
 import {useInputValues} from './inputValues';
 import ButtonAtom from '../../Atoms/ButtonAtom';
 import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
 const OnboardingAddRecipe = () => {
   const {width: SCREEN_WIDTH} = useWindowDimensions();
@@ -115,10 +116,36 @@ const OnboardingAddRecipe = () => {
     });
   };
 
-  const handleIngredientChange = (value, ingredientIndex) => {
-    const updatedIngredients = [...selectedIngredients];
-    updatedIngredients[ingredientIndex] = value;
-    setSelectedIngredients(updatedIngredients);
+  const handleIngredientChange = async (value, ingredientIndex) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/getIngredientByName/${value}`,
+      );
+      const ingredient = response.data[0];
+
+      const updatedIngredients = [...inputValues.ingredients];
+      const updatedIngredient = {
+        id: ingredient._id,
+        quantity: updatedIngredients[ingredientIndex]?.quantity || '',
+      };
+      updatedIngredients[ingredientIndex] = updatedIngredient;
+
+      setInputValues(prevValues => ({
+        ...prevValues,
+        ingredients: updatedIngredients,
+      }));
+      console.log('Selected ingredients:', updatedIngredients);
+    } catch (error) {
+      console.error('Error fetching ingredient by name:', error);
+    }
+  };
+
+  const handleIngredientQuantityChange = (value, ingredientIndex) => {
+    const updatedIngredients = [...inputValues.ingredients];
+    updatedIngredients[ingredientIndex] = {
+      id: inputValues.ingredients[ingredientIndex]?.id || '',
+      quantity: value,
+    };
     handleInputChange(updatedIngredients, 'ingredients');
   };
 
@@ -153,23 +180,39 @@ const OnboardingAddRecipe = () => {
             <ScrollView style={styles.scrollContainer}>
               <View>
                 {selectedIngredients.map((ingredient, ingredientIndex) => (
-                  <View key={ingredientIndex} style={styles.selector}>
-                    <SelectList
-                      setSelected={val =>
-                        handleIngredientChange(val, ingredientIndex)
-                      }
-                      data={ingredients}
-                      save="value"
-                      selectedValue={ingredient}
-                      notFoundText="Ingredient not found, please add it to the list."
-                      searchPlaceholder="Search for an ingredient"
-                      search={false}
-                    />
+                  <View
+                    key={ingredientIndex}
+                    style={styles.ingredientContainer}>
+                    <View style={styles.selector}>
+                      <SelectList
+                        setSelected={val =>
+                          handleIngredientChange(val, ingredientIndex)
+                        }
+                        data={ingredients}
+                        save="value"
+                        selectedValue={ingredient}
+                        notFoundText="Ingredient not found, please add it to the list."
+                        searchPlaceholder="Search for an ingredient"
+                        search={false}
+                      />
+                    </View>
+                    <View style={styles.quantityInput}>
+                      <InputAtom
+                        value={
+                          inputValues['ingredients'][ingredientIndex]?.quantity
+                        }
+                        setValue={text =>
+                          handleIngredientQuantityChange(text, ingredientIndex)
+                        }
+                        placeholder="Quantity"
+                        keyboardType="numeric"
+                      />
+                    </View>
                   </View>
                 ))}
                 <Button
                   title="Add Ingredient"
-                  onPress={text => handleAddInput(item.key)}
+                  onPress={() => handleAddInput(item.key)}
                 />
               </View>
             </ScrollView>
@@ -323,6 +366,15 @@ const styles = StyleSheet.create({
   },
   selector: {
     marginBottom: 9,
+  },
+  quantityInput: {
+    width: 85,
+  },
+  ingredientAdd: {
+    flexDirection: 'row',
+  },
+  ingredientContainer: {
+    flexDirection: 'row',
   },
 });
 export default OnboardingAddRecipe;

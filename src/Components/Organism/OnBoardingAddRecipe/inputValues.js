@@ -5,7 +5,7 @@ export const useInputValues = () => {
     name: '',
     ingredients: [
       {
-        name: '',
+        id: '',
         quantity: '',
       },
     ],

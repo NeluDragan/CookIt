@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, RefreshControl} from 'react-native';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthContext';
 import RecipeBlock from '../Components/Molecule/RecipeMolecule/RecipeBlock';
 
 const FavoriteRecipesScreen = ({navigation}) => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const {userToken} = useContext(AuthContext);
 
   const loadFavoriteRecipes = async () => {
@@ -34,6 +35,12 @@ const FavoriteRecipesScreen = ({navigation}) => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadFavoriteRecipes();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     loadFavoriteRecipes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +49,10 @@ const FavoriteRecipesScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Favorite Recipes</Text>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {favoriteRecipes.length === 0 ? (
           <Text style={styles.Text}>No favorite recipes.</Text>
         ) : (
