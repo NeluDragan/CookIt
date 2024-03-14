@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
+import {showToast} from '../../Atoms/ToastAtom';
 
 const RecipeRow = ({navigation, recipe}) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -65,19 +66,32 @@ const RecipeRow = ({navigation, recipe}) => {
         response.data.message ===
         'Rețeta a fost adăugată la favorite cu succes.'
       ) {
+        showToast(
+          'success',
+          'Rețeta a fost adăugată la favorite cu succes.',
+          '',
+        );
         setIsFavorite(true);
-        console.log('Rețeta a fost adăugată la favorite cu succes.');
       } else if (
         response.data.message ===
         'Rețeta a fost eliminată din favorite cu succes.'
       ) {
         setIsFavorite(false);
-        console.log('Rețeta a fost eliminată din favorite cu succes.');
+        showToast(
+          'error',
+          'Rețeta a fost eliminata din favorite cu succes.',
+          '',
+        );
       }
     } catch (error) {
       console.error(
         'Eroare la adăugarea/eliminarea rețetei din favorite:',
         error.response.data,
+      );
+      showToast(
+        'error',
+        'Eroare la adăugarea/eliminarea rețetei din favorite:',
+        '',
       );
     }
   };

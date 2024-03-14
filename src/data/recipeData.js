@@ -4,7 +4,7 @@ export const data = [
     image: require('../images/addRecipeIcons/title.png'),
     title: 'Title',
     text: 'Enter the title of your recipe',
-    key: 'title',
+    key: 'name',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ export const data = [
     image: require('../images/addRecipeIcons/time.png'),
     title: 'Time',
     text: 'Enter the time it takes to make your recipe',
-    key: 'time',
+    key: 'preparationTime',
   },
   {
     id: 4,
@@ -34,11 +34,11 @@ export const data = [
     text: 'Enter the type of your recipe',
     key: 'type',
   },
-  // {
-  //   id: 6,
-  //   image: require('../images/addRecipeIcons/image.png'),
-  //   title: 'Image',
-  //   text: 'Add an image of your recipe',
-  //   key: 'image',
-  // },
+  {
+    id: 6,
+    image: require('../images/addRecipeIcons/image.png'),
+    title: 'Image',
+    text: 'Add an image of your recipe',
+    key: 'image',
+  },
 ];

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,42 @@ import {
 } from 'react-native';
 import {AuthContext} from '../../../context/AuthContext';
 import axios from 'axios';
+import {showToast} from '../../Atoms/ToastAtom';
 
-const RecipeBlock = ({navigation, recipe, isFavorite}) => {
-  const [refreshing, setRefreshing] = React.useState(false);
+const RecipeBlock = ({navigation, recipe}) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const {userToken} = useContext(AuthContext);
+  const [checkingFavorites, setCheckingFavorites] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (userToken && recipe._id) {
+      const checkFavorite = async () => {
+        try {
+          const headers = {Authorization: userToken};
+          const response = await axios.get(
+            'http://localhost:3001/getFavoriteRecipes',
+            {headers},
+          );
+          const favoriteRecipeIds = response.data.map(recipeID => recipeID._id);
+          setCheckingFavorites(favoriteRecipeIds);
+        } catch (error) {
+          console.error(
+            'Error checking favorite recipes:',
+            error.response.data,
+          );
+        }
+      };
+      checkFavorite();
+    }
+  }, [userToken, recipe._id]);
+
+  useEffect(() => {
+    // Check if the recipe ID exists in the user's list of favorite recipes
+    if (userToken && recipe._id && checkingFavorites.includes(recipe._id)) {
+      setIsFavorite(true);
+    }
+  }, [userToken, recipe._id, checkingFavorites]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -19,10 +52,8 @@ const RecipeBlock = ({navigation, recipe, isFavorite}) => {
       setRefreshing(false);
     }, 2000);
   }, []);
-  const {userToken} = useContext(AuthContext);
 
   const handleRecipeInfoPress = () => {
-    console.log(navigation, recipe);
     if (navigation && recipe) {
       navigation.navigate('RecipeInfo', {recipe});
     } else {
@@ -54,17 +85,32 @@ const RecipeBlock = ({navigation, recipe, isFavorite}) => {
         response.data.message ===
         'Rețeta a fost adăugată la favorite cu succes.'
       ) {
-        console.log('Rețeta a fost adăugată la favorite cu succes.');
+        showToast(
+          'success',
+          'Rețeta a fost adăugată la favorite cu succes.',
+          '',
+        );
+        setIsFavorite(true);
       } else if (
         response.data.message ===
         'Rețeta a fost eliminată din favorite cu succes.'
       ) {
-        console.log('Rețeta a fost eliminată din favorite cu succes.');
+        showToast(
+          'error',
+          'Rețeta a fost eliminata din favorite cu succes.',
+          '',
+        );
+        setIsFavorite(false);
       }
     } catch (error) {
       console.error(
         'Eroare la adăugarea/eliminarea rețetei din favorite:',
         error.response.data,
+      );
+      showToast(
+        'error',
+        'Eroare la adăugarea/eliminarea rețetei din favorite:',
+        '',
       );
     }
   };

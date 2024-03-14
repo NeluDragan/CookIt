@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useRef, useState, useEffect} from 'react';
 import {
@@ -13,16 +14,15 @@ import {
   ScrollView,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
-
 import InputAtom from '../../Atoms/InputAtom';
 import {data} from '../../../data/recipeData';
 import {useInputValues} from './inputValues';
 import ButtonAtom from '../../Atoms/ButtonAtom';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const OnboardingAddRecipe = () => {
   const {width: SCREEN_WIDTH} = useWindowDimensions();
   const flatListRef = useRef(null);
-
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
 
@@ -32,7 +32,7 @@ const OnboardingAddRecipe = () => {
   });
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentItemIndex < data.length - 1) {
       flatListRef.current.scrollTo({
         x: (currentItemIndex + 1) * SCREEN_WIDTH,
@@ -41,6 +41,24 @@ const OnboardingAddRecipe = () => {
       setCurrentItemIndex(currentItemIndex + 1);
     } else {
       console.log('Final state:', inputValues);
+      try {
+        const response = await fetch('http://localhost:3001/addRecipe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(inputValues),
+        });
+        const data = await response.json();
+        console.log('Recipe saved successfully:', data);
+        // Reset inputValues after saving
+        // setInputValues({
+        //   editingIndex: 0,
+        //   text: '',
+        // });
+      } catch (error) {
+        console.error('Error saving recipe:', error);
+      }
     }
   };
 
@@ -51,8 +69,9 @@ const OnboardingAddRecipe = () => {
   const fetchIngredients = async () => {
     try {
       const response = await fetch('http://localhost:3001/getIngredientsName');
-      const data = await response.json();
-      setIngredients(data.map(ingredient => ingredient.name));
+      const responseData = await response.json();
+      setIngredients(responseData.map(ingredient => ingredient.name).sort());
+      ingredients.sort();
     } catch (error) {
       console.error('Error fetching ingredients:', error);
     }
@@ -71,6 +90,29 @@ const OnboardingAddRecipe = () => {
         instructions: [...prevValues.instructions, ''],
       }));
     }
+  };
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setInputValues(prevValues => ({
+          ...prevValues,
+          image: imageUri,
+        }));
+      }
+    });
   };
 
   const handleIngredientChange = (value, ingredientIndex) => {
@@ -99,7 +141,7 @@ const OnboardingAddRecipe = () => {
         <View>
           <Text style={styles.itemTitle}>{item.title}</Text>
           <Text style={styles.itemText}>{item.text}</Text>
-          {item.key === 'title' && (
+          {item.key === 'name' && (
             <InputAtom
               setValue={text => handleInputChange(text, item.key)}
               placeholder={`Enter the ${item.title.toLowerCase()} of your recipe`}
@@ -113,12 +155,15 @@ const OnboardingAddRecipe = () => {
                 {selectedIngredients.map((ingredient, ingredientIndex) => (
                   <View key={ingredientIndex} style={styles.selector}>
                     <SelectList
-                      save="value"
-                      selectedValue={ingredient}
-                      data={ingredients}
                       setSelected={val =>
                         handleIngredientChange(val, ingredientIndex)
                       }
+                      data={ingredients}
+                      save="value"
+                      selectedValue={ingredient}
+                      notFoundText="Ingredient not found, please add it to the list."
+                      searchPlaceholder="Search for an ingredient"
+                      search={false}
                     />
                   </View>
                 ))}
@@ -130,7 +175,7 @@ const OnboardingAddRecipe = () => {
             </ScrollView>
           )}
 
-          {item.key === 'time' && (
+          {item.key === 'preparationTime' && (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <InputAtom
                 value={inputValues[item.key]}
@@ -183,6 +228,22 @@ const OnboardingAddRecipe = () => {
               ]}
               setSelected={val => handleInputChange(val, item.key)}
             />
+          )}
+
+          {item.key === 'image' && (
+            <View>
+              {inputValues[item.key] && (
+                <Image
+                  source={{uri: inputValues[item.key]}}
+                  style={{flex: 1, maxHeight: '40%'}}
+                  resizeMode="contain"
+                />
+              )}
+              <Button title="Choose Photo" onPress={openImagePicker} />
+              {inputValues.time && (
+                <Image source={{uri: inputValues.time}} style={styles.image} />
+              )}
+            </View>
           )}
 
           {index < data.length - 1 && (
