@@ -13,7 +13,7 @@ export const useInputValues = () => {
     instructions: [],
     type: '',
     image: '',
-    createdBy: '65279c9b6f00bfbec806be87',
+    createdBy: '',
   });
 
   return {inputValues, setInputValues};

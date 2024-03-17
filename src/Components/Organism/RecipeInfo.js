@@ -18,7 +18,6 @@ const RecipeInfo = ({route}) => {
   const fetchIngredientDetails = async () => {
     try {
       const detailsPromises = recipe.ingredients.map(async ingredient => {
-        console.log('ingredient', ingredient._id);
         const response = await axios.get(
           `http://localhost:3001/getIngredientById/${ingredient.id}`,
         );
@@ -226,6 +225,9 @@ const styles = StyleSheet.create({
     marginTop: -180,
     fontWeight: 'bold',
     color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 3,
   },
   preparationTime: {
     fontSize: 14,

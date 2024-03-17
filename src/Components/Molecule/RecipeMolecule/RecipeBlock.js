@@ -142,7 +142,11 @@ const RecipeBlock = ({navigation, recipe}) => {
       </TouchableOpacity>
       <View style={styles.textContainer}>
         <View style={styles.recipeNameOverlay}>
-          <Text style={styles.recipeName}>{recipe.name}</Text>
+          <Text style={styles.recipeName} numberOfLines={1}>
+            {recipe.name.length > 200
+              ? recipe.name.substring(0, 200) + '...'
+              : recipe.name}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -187,6 +191,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontWeight: 'bold',
     color: 'black',
+    maxWidth: 165,
   },
   preparationTime: {
     position: 'absolute',
@@ -197,6 +202,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 3,
   },
 });
 
