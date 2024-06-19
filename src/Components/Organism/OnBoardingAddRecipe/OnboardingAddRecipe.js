@@ -159,13 +159,13 @@ const OnboardingAddRecipe = () => {
       maxWidth: 2000,
     };
 
-    launchImageLibrary(options, response => {
+    launchImageLibrary(options).then(response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error);
+      } else if (response.errorCode) {
+        console.log('Image picker error: ', response.errorMessage);
       } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
+        const imageUri = response.assets[0].uri;
         setInputValues(prevValues => ({
           ...prevValues,
           image: imageUri,

@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import <Notifee/Notifee.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -22,5 +22,7 @@
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
+pod 'Notifee', :path => '../node_modules/@notifee/react-native'
+
 
 @end

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,17 +6,44 @@ import {
   Image,
   Keyboard,
   TouchableWithoutFeedback,
+  FlatList,
+  Text,
 } from 'react-native';
+import axios from 'axios';
 
 const SearchBarMolecule = ({searchPhrase, setSearchPhrase}) => {
   const [isTyping, setIsTyping] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleTextInputFocus = () => {
-    if (isTyping) {
-      setSearchPhrase('');
-    }
     setIsTyping(true);
   };
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      if (searchPhrase.trim().length >= 3) {
+        try {
+          const response = await axios.get(
+            'http://localhost:3001/searchRecipes',
+            {
+              params: {query: searchPhrase},
+            },
+          );
+          setSearchResults(response.data);
+          console.log('Search results:', response.data);
+        } catch (error) {
+          console.error(
+            'Error searching recipes:',
+            error.response?.data || error.message,
+          );
+        }
+      } else {
+        setSearchResults([]);
+      }
+    };
+
+    fetchRecipes();
+  }, [searchPhrase]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,6 +65,17 @@ const SearchBarMolecule = ({searchPhrase, setSearchPhrase}) => {
             style={styles.icon}
           />
         </View>
+        {searchResults.length > 0 && (
+          <FlatList
+            data={searchResults}
+            keyExtractor={item => item._id}
+            renderItem={({item}) => (
+              <View style={styles.resultItem}>
+                <Text>{item.name}</Text>
+              </View>
+            )}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -67,6 +105,11 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     marginHorizontal: 10,
+  },
+  resultItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
 

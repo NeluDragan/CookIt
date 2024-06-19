@@ -82,7 +82,7 @@ const ProfileScreen = ({navigation}) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigateToScreen('About')}>
-        <Text style={styles.buttonText}>About CookIt</Text>
+        <Text style={styles.buttonText}>My Recipes</Text>
         <Image
           source={require('../images/icons/reciepeList/next.png')}
           style={styles.nextIcon}
